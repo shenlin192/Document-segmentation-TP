@@ -1,4 +1,4 @@
-function result = recusiveCut( img )
+function [ result ] = recusiveCut( img )
 
 %binarisation 
 BW = im2bw(img, 0.5);
@@ -15,7 +15,7 @@ afterFilte(afterFilte~=1)=0;
 [pks,locs,w,p] = findpeaks(afterFilte);
 [maxVal,index]=max(w);
 
-    if(maxVal)<15
+    if(maxVal)<20
         result=img;
     else
         cutPoint=(locs(index)+locs(index+1))/2;
@@ -25,10 +25,7 @@ afterFilte(afterFilte~=1)=0;
         imshow(I1)
         figure;
         imshow(I2)
-       % recusiveCut(I1);
-       % recusiveCut(I2);
-        
-        result=[recusiveCut(I1);recusiveCut(I2)];
+        recusiveCut(I2);recusiveCut(I2);
     end
 
 end
