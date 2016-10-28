@@ -5,7 +5,8 @@ traiter, et en particulier reconnaitre leur type : facture, lettre de réclamati
 n’aurons bien sûr pas le temps de réaliser ce processus en entier, mais nous allons nous attaquer à la
 séparation en bloc distincts du document, ainsi qu’à la reconnaissance des éléments constituant ces
 blocs. Vous travaillerez dans un premier avec l’image sample 1
-.
+
+
 • Après avoir chargé l’image dans Matlab, appliquez lui des traitements de base de correction et
 de binarisation.
 
