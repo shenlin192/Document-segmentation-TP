@@ -1,32 +1,101 @@
-function [ result ] = recusiveCut( img )
+function result = recusiveCut( img )
 
 %binarisation 
 BW = im2bw(img, 0.5);
+
+%calculate the sum of pixels
 sumLine=sum(BW,2);
+sumCol=sum(BW,1);
+
+disp('Length of sumLine')
+disp(length(sumLine));
+
+disp('Length of sumCol')
+disp(length(sumCol));
 
 %filte
-afterFilte = smooth( 1:length(sumLine),sumLine);
+afterFilteLine = smooth( sumLine);
+afterFilteCol = smooth( sumCol);
 
-%normales the peaks
-afterFilte(afterFilte> mean(afterFilte))=1;
-afterFilte(afterFilte~=1)=0;
+%normalies the peaks
+afterFilteLine(afterFilteLine> mean(afterFilteLine))=1;
+afterFilteLine(afterFilteLine~=1)=0;
 
-%determinate the largest vallays
-[pks,locs,w,p] = findpeaks(afterFilte);
-[maxVal,index]=max(w);
+afterFilteCol(afterFilteCol> mean(afterFilteCol))=1;
+afterFilteCol(afterFilteCol~=1)=0;
 
-    if(maxVal)<20
-        result=img;
+if(isempty(afterFilteCol))
+    afterFilteCol=[0,0,0];
+end
+
+if(isempty(afterFilteLine))
+    afterFilteLine=[0,0,0];
+end
+
+
+%determinate the largest vallays of lines and Columns
+[pksLine,locsLine,wLine,pLine] = findpeaks(afterFilteLine);
+[maxValLine,indexLine]=max(wLine);
+
+[pksCol,locsCol,wCol,pCol] = findpeaks(afterFilteCol);
+[maxValCol,indexCol]=max(wCol);
+    
+%avoid empty matrix
+if(isempty(maxValLine))
+    maxValLine=0;
+end
+
+if(isempty(maxValCol))
+    maxValCol=0;
+end
+
+disp(maxValLine)
+disp(maxValCol)
+   
+    %determinate the threshold
+    if(maxValLine<20 && maxValCol<20) 
+        result=img;     
+        disp('end of a recusion');
+        disp('--------------------');
     else
-        cutPoint=(locs(index)+locs(index+1))/2;
-        I1=img(1:cutPoint-1,:,:);
-        I2=img(cutPoint:end,:,:);
-        figure;
-        imshow(I1)
-        figure;
-        imshow(I2)
-        recusiveCut(I2);recusiveCut(I2);
+        %determinate X cut or Y cut
+        if(maxValLine>maxValCol) 
+            cutPoint=(locsLine(indexLine)+locsLine(indexLine+1))/2;
+            disp('Ycut');
+            disp(cutPoint);
+            disp('--------------------');
+            I1=img(1:cutPoint-1,:,:);
+            I2=img(cutPoint:end,:,:);
+            figure;
+            imshow(I1)
+            figure;
+            imshow(I2)
+            %call the function recusively
+            result=[recusiveCut(I1);recusiveCut(I2)];
+        else       
+            cutPoint=int8((locsCol(indexCol)+locsCol(indexCol+1))/2);      
+            disp('Xcut');
+            disp(cutPoint); 
+            disp('--------------------');
+            I1=img(:,1:cutPoint-1,:);
+            
+            size(I1)
+            size(img)
+            cutPoint
+            %Here is the problem, I2 is always empty. I don't konw why
+            %Except for I2, everything is fine. CutPoint, size(img) and
+            %size(I1) are all fine.
+            %I2=img(:,cutPoint:size(img,2),:);
+            I2=img(:,cutPoint:end,:);
+            size(I2)
+            I2
+            figure;
+            imshow(I1)
+            figure;
+            imshow(I2)
+            %call the function recusively
+            result=[recusiveCut(I1),recusiveCut(I2)];
+        end     
     end
-
 end
 

@@ -7,17 +7,17 @@ sumLine=sum(BW,2);
 
 %filte
 figure
-plot(1:length(sumLine),sumLine)
+plot(sumLine,1:length(sumLine));
 afterFilte = smooth( 1:length(sumLine),sumLine);
 %afterFilte2 = smooth( 1:length(afterFilte1),afterFilte1);
 figure;
-plot(afterFilte)
+plot(afterFilte,1:length(afterFilte))
 
 %normales the peaks
 afterFilte(afterFilte> mean(afterFilte))=1;
 afterFilte(afterFilte~=1)=0;
 figure;
-plot(afterFilte)
+plot(afterFilte);
 
 %determinate the largest vallays
 [pks,locs,w,p] = findpeaks(afterFilte);
