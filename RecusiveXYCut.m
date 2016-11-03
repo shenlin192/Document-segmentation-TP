@@ -2,6 +2,8 @@
 close all;
 clc;
 I = imread('old-doc.jpg');
-
-recusiveCut(I);
+BW = im2bw(I, 0.5);
+figure;
+imshow(BW);
+recusiveYCut(I);
 
