@@ -7,4 +7,4 @@
 
 ## RLSA
 1. "RLSA.m" is the only file of this algorithm.   
-2. The output of this file are three figures: figure 1 shows of the RLSA applied in Y direction, figure 2 shows of the RLSA applied in X direction, and figure 3 shows a combined result of figure 1 and figure 2.
+2. The output of this file are three figures: figure 1 shows the result of the RLSA applied in Y direction, figure 2 shows the result of the RLSA applied in X direction, and figure 3 shows a combined result of figure 1 and figure 2.
